@@ -1,0 +1,47 @@
+version: "3.9"
+
+services:
+  # ──── PostgreSQL ────
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: anvaya
+      POSTGRES_PASSWORD: anvaya_pass
+      POSTGRES_DB: anvaya_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U anvaya -d anvaya_db"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # ──── FastAPI Backend ────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://anvaya:anvaya_pass@postgres:5432/anvaya_db
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # ──── Next.js Frontend ────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8000
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:

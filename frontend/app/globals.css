@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-primary: #0d7377;
+  --color-primary-light: #e0f2f1;
+  --color-accent: #f59e0b;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+}
+
+:root {
+  --background: #faf9f7;
+  --foreground: #1f2937;
+  --muted: #6b7280;
+  --card: #ffffff;
+  --border: #e5e7eb;
+}
+
+body.theme-dark {
+  --background: #0f172a;
+  --foreground: #f8fafc;
+  --muted: #94a3b8;
+  --card: #1e293b;
+  --border: #334155;
+  color-scheme: dark;
+}
+
+body.theme-high-contrast {
+  --background: #000000;
+  --foreground: #ffffff;
+  --muted: #ffffff;
+  --card: #000000;
+  --border: #ffffff;
+  --color-primary: #ffff00;
+  color-scheme: dark;
+}
+
+/* Force high contrast borders and backgrounds to respect vars */
+body.theme-high-contrast * {
+  border-color: var(--border) !important;
+}
+
+@layer utilities {
+  .bg-background { background-color: var(--background); }
+  .text-foreground { color: var(--foreground); }
+  .bg-card { background-color: var(--card); }
+  .text-muted { color: var(--muted); }
+  .border-border { border-color: var(--border); }
+}
+
+body.text-size-xlarge {
+  --base-font-size: 22px;
+}
+body.text-size-xlarge h1 { font-size: 3.5rem !important; }
+body.text-size-xlarge h2 { font-size: 2.75rem !important; }
+body.text-size-xlarge h3 { font-size: 1.75rem !important; }
+
+body.font-dyslexic * {
+  font-family: 'Comic Sans MS', 'OpenDyslexic', sans-serif !important;
+  letter-spacing: 0.05em !important;
+  line-height: 1.8 !important;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-body);
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+  }
+}
+
+/* Animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.4s ease-out;
+}
+
+body.theme-dark *:not([class*="bg-teal"]):not([class*="bg-amber"]):not([class*="bg-indigo"]):not([class*="bg-blue"]):not([class*="text-white"]):not(button):not(button *) { color: var(--foreground) !important; }
+body.theme-high-contrast *:not([class*="bg-"]):not(button):not(button *) { color: var(--foreground) !important; }
