@@ -50,6 +50,6 @@ def get_llm_response(user_input):
         # Extract model response
         return result["choices"][0]["message"]["content"]
 
-    except Exception:
+    except Exception as e:
         print("OpenRouter Error:", repr(e))
         return None
