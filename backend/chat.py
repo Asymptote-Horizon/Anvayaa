@@ -31,7 +31,7 @@ def get_llm_response(user_input):
     }
 
     payload = {
-        "model": "liquid/lfm-2.5-1.2b-thinking:free",
+        "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
         "messages": [
             {
                 "role": "user",
