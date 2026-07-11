@@ -51,5 +51,5 @@ def get_llm_response(user_input):
         return result["choices"][0]["message"]["content"]
 
     except Exception:
-        print("my wisdom is clouded right now. wait and ill help you soon.")
+        print("OpenRouter Error:", repr(e))
         return None
