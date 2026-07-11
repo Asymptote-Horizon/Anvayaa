@@ -30,7 +30,7 @@ def get_llm_response(user_input):
     }
 
     payload = {
-        "model": "liquid/lfm-2.5-1.2b-thinking:free",
+        "model": "nvidia/nemotron-3-ultra-550b-a55b:free",
         "messages": [
             {
                 "role": "user",
@@ -40,16 +40,22 @@ def get_llm_response(user_input):
     }
 
     try:
-        response = requests.post(url, headers=headers, data=json.dumps(payload), timeout=30)
+        response = requests.post(
+        url,
+        headers=headers,
+        json=payload,   # <-- use json= instead of data=json.dumps()
+        timeout=30
+    )
 
-        # Raise error for bad status codes
+        if not response.ok:
+        print("Status Code:", response.status_code)
+        print("Response Body:", response.text)
+
         response.raise_for_status()
 
         result = response.json()
-
-        # Extract model response
         return result["choices"][0]["message"]["content"]
 
     except Exception as e:
-        print("OpenRouter Error:", repr(e))
-        return None
+    print("OpenRouter Error:", repr(e))
+    return None
